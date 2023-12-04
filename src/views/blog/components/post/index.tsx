@@ -8,12 +8,12 @@ interface PostProps {
 
 export function Post({ post }: PostProps) {
   return (
-    <S.PostContainer to={`${post.url}`} target='_blank'>
+    <S.PostContainer to={`/post/${post.number}`} target='_blank'>
       <div>
         <strong>{post.title}</strong>
         <span>{dateFormatter(post.created_at)}</span>
       </div>
-      <p>{post.description}</p>
+      <p>{post.body}</p>
     </S.PostContainer>
   );
 }
