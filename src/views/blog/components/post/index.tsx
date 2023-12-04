@@ -1,18 +1,19 @@
+import { BlogPostProps } from '../..';
+import { dateFormatter } from '../../../../utils/dateFormatter';
 import * as S from './styles';
 
-export function Post() {
+interface PostProps {
+  post: BlogPostProps;
+}
+
+export function Post({ post }: PostProps) {
   return (
-    <S.PostContainer to='/post/1'>
+    <S.PostContainer to={`${post.url}`} target='_blank'>
       <div>
-        <strong>React and Next.js Server Components</strong>
-        <span>Há 1 dia</span>
+        <strong>{post.title}</strong>
+        <span>{dateFormatter(post.created_at)}</span>
       </div>
-      <p>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. A harum vero
-        impedit ad eveniet sit magni aliquam odio dicta hic alias libero facere
-        vel incidunt deleniti beatae neque non eligendi saepe, molestias odit
-        quasi! Aperiam assumenda sit dignissimos facere exercitationem.
-      </p>
+      <p>{post.description}</p>
     </S.PostContainer>
   );
 }
