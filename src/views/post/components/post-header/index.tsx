@@ -8,8 +8,16 @@ import {
   faComment
 } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import { BlogPostProps } from '../../../blog';
+import { Spinner } from '../../../../components/spinner';
+import { dateFormatter } from '../../../../utils/dateFormatter';
 
-export function PostHeader() {
+interface PostHeaderProps {
+  postInfo: BlogPostProps;
+  loading: boolean;
+}
+
+export function PostHeader({ postInfo, loading }: PostHeaderProps) {
   const navigate = useNavigate();
 
   function goBack() {
@@ -18,31 +26,42 @@ export function PostHeader() {
 
   return (
     <S.PostHeader>
-      <header>
-        <ForwardLink
-          as='button'
-          icon={<FontAwesomeIcon icon={faChevronLeft} />}
-          text='Voltar'
-          variant='iconLeft'
-          onClick={goBack}
-        />
-        <ForwardLink text='Ver no Github' href='#' target='_blank' />
-      </header>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <>
+          <header>
+            <ForwardLink
+              as='button'
+              icon={<FontAwesomeIcon icon={faChevronLeft} />}
+              text='Voltar'
+              variant='iconLeft'
+              onClick={goBack}
+            />
+            <ForwardLink
+              text='Ver no Github'
+              href={postInfo.html_url}
+              target='_blank'
+            />
+          </header>
 
-      <h1>Javascript and C#: the similarities</h1>
-      <ul>
-        <li>
-          <FontAwesomeIcon icon={faGithub} />
-          hramonp-dev
-        </li>
-        <li>
-          <FontAwesomeIcon icon={faCalendar} />
-          Há 1 dia
-        </li>
-        <li>
-          <FontAwesomeIcon icon={faComment} />5 comentários
-        </li>
-      </ul>
+          <h1>{postInfo.title}</h1>
+          <ul>
+            <li>
+              <FontAwesomeIcon icon={faGithub} />
+              {postInfo.user.login}
+            </li>
+            <li>
+              <FontAwesomeIcon icon={faCalendar} />
+              {dateFormatter(postInfo?.created_at)}
+            </li>
+            <li>
+              <FontAwesomeIcon icon={faComment} />
+              {postInfo.comments} comentários
+            </li>
+          </ul>
+        </>
+      )}
     </S.PostHeader>
   );
 }
